@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Barbearia do Prado</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#12140F;
+    --bg-alt:#181A13;
+    --surface:#1D2017;
+    --surface-2:#242820;
+    --border:#33372B;
+    --border-soft:#242820;
+    --text:#F2EFE4;
+    --text-dim:#B9B4A3;
+    --text-mute:#82806F;
+    --accent:#B8935A;
+    --accent-soft:#8E7040;
+    --accent-contrast:#12140E;
+    --danger:#B4623F;
+    --radius-s:3px;
+    --radius-m:4px;
+    --maxw:1180px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+  }
+  h1,h2,h3,.serif{ font-family:'Fraunces',serif; font-weight:500; letter-spacing:.2px; }
+  a{ color:inherit; text-decoration:none; }
+  button{ font-family:inherit; cursor:pointer; }
+  img{ max-width:100%; display:block; }
+  .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 24px; }
+  ::selection{ background:var(--accent); color:var(--accent-contrast); }
+  :focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+  .nav{ position:sticky; top:0; z-index:40; background:rgba(18,20,15,.9); backdrop-filter:blur(10px); border-bottom:1px solid var(--border-soft); }
+  .nav-inner{ display:flex; align-items:center; justify-content:space-between; height:72px; }
+  .brand{ font-family:'Fraunces',serif; font-size:19px; letter-spacing:.5px; }
+  .brand b{ font-weight:600; }
+  .nav-links{ display:flex; gap:32px; align-items:center; }
+  .nav-links a{ font-size:14px; color:var(--text-dim); transition:color .15s; }
+  .nav-links a:hover{ color:var(--text); }
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    padding:13px 26px; border-radius:var(--radius-s); font-size:13px; font-weight:600;
+    letter-spacing:.06em; text-transform:uppercase; border:1px solid transparent;
+    transition:transform .15s ease, background .15s ease, border-color .15s ease, opacity .15s;
+  }
+  .btn:active{ transform:scale(.98); }
+  .btn-primary{ background:var(--accent); color:var(--accent-contrast); }
+  .btn-primary:hover{ background:#CBA671; }
+  .btn-ghost{ background:transparent; color:var(--text); border-color:var(--border); }
+  .btn-ghost:hover{ border-color:var(--accent); color:var(--accent); }
+  .btn-sm{ padding:9px 16px; font-size:12px; }
+  .btn-danger{ background:transparent; color:var(--danger); border-color:var(--danger); }
+  .btn-danger:hover{ background:var(--danger); color:#12140E; }
+  .btn-whatsapp{ background:#233024; color:#DCEFD8; border-color:#3A4E3B; }
+  .btn-whatsapp:hover{ border-color:#6FA46A; }
+  .btn-block{ width:100%; }
+  .btn[disabled]{ opacity:.4; cursor:not-allowed; }
+  .menu-toggle{ display:none; background:none; border:none; color:var(--text); }
+
+  .hero{ padding:96px 0 88px; border-bottom:1px solid var(--border-soft); position:relative; overflow:hidden; }
+  .hero::before{ content:''; position:absolute; right:-120px; top:-120px; width:480px; height:480px; border:1px solid var(--border); border-radius:50%; }
+  .hero::after{ content:''; position:absolute; right:-40px; top:40px; width:340px; height:340px; border:1px solid var(--border-soft); border-radius:50%; }
+  .eyebrow{ color:var(--accent); font-size:13px; letter-spacing:.12em; text-transform:uppercase; margin:0 0 18px; }
+  .hero h1{ font-size:clamp(40px,7vw,74px); line-height:1.02; margin:0 0 22px; max-width:760px; }
+  .hero p.lead{ font-size:18px; color:var(--text-dim); max-width:480px; margin:0 0 36px; }
+  .hero-actions{ display:flex; gap:14px; flex-wrap:wrap; }
+
+  section{ padding:88px 0; }
+  .section-border{ border-bottom:1px solid var(--border-soft); }
+  .section-head{ display:flex; align-items:flex-end; justify-content:space-between; gap:24px; margin-bottom:48px; flex-wrap:wrap; }
+  .section-head h2{ font-size:clamp(28px,4vw,40px); margin:0; }
+  .section-head p{ color:var(--text-dim); max-width:420px; margin:10px 0 0; font-size:15px; }
+  .bg-alt{ background:var(--bg-alt); }
+
+  .about-grid{ display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start; }
+  .about-grid p{ color:var(--text-dim); font-size:16px; margin:0 0 16px; max-width:52ch; }
+  .stat-row{ display:flex; gap:40px; margin-top:32px; flex-wrap:wrap; }
+  .stat b{ font-family:'Fraunces',serif; font-size:32px; display:block; }
+  .stat span{ font-size:13px; color:var(--text-mute); }
+
+  .grid-services{ display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:1px; background:var(--border-soft); border:1px solid var(--border-soft); }
+  .service-card{ background:var(--bg); padding:32px 28px; display:flex; flex-direction:column; gap:14px; }
+  .service-card h3{ font-size:20px; margin:0; }
+  .service-card p{ color:var(--text-dim); font-size:14px; margin:0; flex:1; }
+  .service-meta{ display:flex; align-items:baseline; justify-content:space-between; border-top:1px solid var(--border-soft); padding-top:14px; }
+  .service-price{ font-family:'Fraunces',serif; font-size:22px; }
+  .service-time{ font-size:12px; color:var(--text-mute); }
+
+  .prado-grid{ display:grid; grid-template-columns:280px 1fr; gap:48px; align-items:center; }
+  .prado-photo{ aspect-ratio:4/5; background:linear-gradient(160deg,var(--surface-2),var(--bg-alt)); border:1px solid var(--border-soft); border-radius:var(--radius-m); display:flex; align-items:center; justify-content:center; color:var(--text-mute); font-size:12px; overflow:hidden; }
+  .prado-photo img{ width:100%; height:100%; object-fit:cover; }
+  .prado-name{ font-size:30px; margin:0 0 4px; }
+  .prado-role{ color:var(--accent); font-size:13px; text-transform:uppercase; letter-spacing:.08em; margin-bottom:16px; }
+  .prado-text p{ color:var(--text-dim); font-size:15px; max-width:54ch; }
+
+  .empty-state{ border:1px dashed var(--border); border-radius:var(--radius-m); padding:48px 24px; text-align:center; color:var(--text-mute); font-size:14px; }
+
+  .location-grid{ display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center; }
+  .map-box{ aspect-ratio:4/3; border:1px solid var(--border); border-radius:var(--radius-m); overflow:hidden; background:var(--surface); }
+  .map-box iframe{ width:100%; height:100%; border:0; filter:grayscale(.25) contrast(1.05); }
+  .map-fallback{ width:100%;height:100%; display:flex; align-items:center; justify-content:center; color:var(--text-mute); font-size:13px; text-align:center; padding:20px; }
+  .info-line{ display:flex; gap:14px; margin-bottom:18px; align-items:flex-start; }
+  .info-line svg{ flex-shrink:0; margin-top:2px; color:var(--accent); }
+  .info-line div b{ display:block; font-size:14px; margin-bottom:2px; }
+  .info-line div span{ color:var(--text-dim); font-size:14px; }
+
+  footer{ border-top:1px solid var(--border-soft); padding:64px 0 32px; background:var(--bg-alt); }
+  .footer-grid{ display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:32px; margin-bottom:48px; }
+  .footer-grid h4{ font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:var(--text-mute); margin:0 0 16px; }
+  .footer-grid a, .footer-grid span{ display:block; font-size:14px; color:var(--text-dim); margin-bottom:10px; }
+  .footer-grid a:hover{ color:var(--accent); }
+  .footer-bottom{ display:flex; justify-content:space-between; padding-top:24px; border-top:1px solid var(--border-soft); font-size:12px; color:var(--text-mute); flex-wrap:wrap; gap:8px; }
+  .footer-bottom a{ text-decoration:underline; }
+
+  .wa-float{ position:fixed; bottom:24px; right:24px; z-index:50; background:#3BA55A; color:#fff; width:54px; height:54px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 8px 24px rgba(0,0,0,.4); border:none; }
+  .wa-float:hover{ background:#4CC066; }
+
+  .booking-page{ min-height:100vh; padding:40px 0 100px; }
+  .booking-header{ display:flex; align-items:center; justify-content:space-between; margin-bottom:36px; }
+  .steps{ display:flex; gap:6px; margin-bottom:40px; }
+  .steps i{ flex:1; height:3px; background:var(--border); border-radius:2px; }
+  .steps i.done{ background:var(--accent); }
+  .booking-card{ max-width:640px; margin:0 auto; }
+  .step-title{ font-size:26px; margin:0 0 8px; }
+  .step-sub{ color:var(--text-dim); font-size:14px; margin:0 0 32px; }
+  .option-list{ display:grid; gap:12px; }
+  .option-item{ display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 20px; background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--radius-m); text-align:left; width:100%; color:var(--text); transition:border-color .15s, background .15s; }
+  .option-item:hover{ border-color:var(--accent); }
+  .option-item.selected{ border-color:var(--accent); background:var(--surface-2); }
+  .option-item .oi-name{ font-size:15px; font-weight:600; }
+  .option-item .oi-sub{ font-size:12px; color:var(--text-mute); margin-top:3px; }
+  .option-item .oi-right{ font-family:'Fraunces',serif; font-size:16px; color:var(--accent); white-space:nowrap; }
+
+  .date-scroller{ display:flex; gap:10px; overflow-x:auto; padding-bottom:8px; margin-bottom:8px; }
+  .date-chip{ flex:0 0 auto; width:64px; padding:12px 0; text-align:center; border:1px solid var(--border-soft); border-radius:var(--radius-m); background:var(--surface); }
+  .date-chip .dow{ font-size:11px; color:var(--text-mute); text-transform:uppercase; }
+  .date-chip .num{ font-family:'Fraunces',serif; font-size:20px; margin-top:2px; }
+  .date-chip.selected{ border-color:var(--accent); background:var(--surface-2); color:var(--accent); }
+  .date-chip[disabled]{ opacity:.3; cursor:not-allowed; }
+
+  .slot-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(84px,1fr)); gap:10px; }
+  .slot-btn{ padding:12px 6px; border:1px solid var(--border-soft); background:var(--surface); border-radius:var(--radius-m); font-size:13px; color:var(--text); }
+  .slot-btn:hover{ border-color:var(--accent); }
+  .slot-btn.selected{ background:var(--accent); color:var(--accent-contrast); border-color:var(--accent); font-weight:600; }
+
+  .field{ margin-bottom:18px; }
+  .field label{ display:block; font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--text-mute); margin-bottom:8px; }
+  .field input, .field select, .field textarea{
+    width:100%; padding:14px 16px; background:var(--surface); border:1px solid var(--border-soft);
+    border-radius:var(--radius-m); color:var(--text); font-size:15px; font-family:inherit;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{ border-color:var(--accent); }
+  .hint{ font-size:12px; color:var(--accent); margin-top:8px; }
+  .error-box{ background:rgba(180,98,63,.12); border:1px solid var(--danger); color:#E3AB93; padding:12px 16px; border-radius:var(--radius-m); font-size:13px; margin-bottom:18px; }
+
+  .summary-card{ background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--radius-m); padding:24px; margin-bottom:24px; }
+  .summary-row{ display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border-soft); font-size:14px; }
+  .summary-row:last-child{ border-bottom:none; }
+  .summary-row span:first-child{ color:var(--text-mute); }
+
+  .booking-nav{ display:flex; justify-content:space-between; margin-top:32px; gap:12px; }
+
+  .success-box{ text-align:center; padding:40px 0; }
+  .success-icon{ width:72px; height:72px; border-radius:50%; background:var(--accent); color:var(--accent-contrast); display:flex; align-items:center; justify-content:center; margin:0 auto 24px; }
+  .success-box h2{ font-size:28px; margin:0 0 8px; }
+  .success-box p.lead2{ color:var(--text-dim); margin:0 0 32px; }
+  .success-actions{ display:flex; flex-direction:column; gap:12px; }
+
+  .spinner{ width:18px; height:18px; border:2px solid rgba(255,255,255,.3); border-top-color:currentColor; border-radius:50%; animation:spin .7s linear infinite; }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  .admin-shell{ display:flex; min-height:100vh; }
+  .admin-side{ width:230px; flex-shrink:0; background:var(--bg-alt); border-right:1px solid var(--border-soft); padding:28px 16px; display:flex; flex-direction:column; }
+  .admin-side .brand{ padding:0 10px 28px; }
+  .admin-nav a, .admin-nav button{ display:flex; align-items:center; gap:10px; width:100%; text-align:left; padding:11px 12px; border-radius:var(--radius-m); font-size:14px; color:var(--text-dim); background:none; border:none; margin-bottom:2px; }
+  .admin-nav a:hover, .admin-nav button:hover{ background:var(--surface); color:var(--text); }
+  .admin-nav a.active{ background:var(--surface-2); color:var(--accent); font-weight:600; }
+  .admin-main{ flex:1; padding:36px 40px; min-width:0; }
+  .admin-topbar{ display:flex; justify-content:space-between; align-items:center; margin-bottom:32px; flex-wrap:wrap; gap:12px; }
+  .admin-topbar h1{ font-size:24px; margin:0; }
+
+  .kpi-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:16px; margin-bottom:36px; }
+  .kpi-card{ background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--radius-m); padding:22px; }
+  .kpi-card .num{ font-family:'Fraunces',serif; font-size:30px; margin-bottom:4px; }
+  .kpi-card .lbl{ font-size:12px; color:var(--text-mute); text-transform:uppercase; letter-spacing:.05em; }
+
+  .panel{ background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--radius-m); padding:26px; margin-bottom:24px; }
+  .panel h3{ margin:0 0 18px; font-size:17px; }
+
+  table{ width:100%; border-collapse:collapse; font-size:14px; }
+  th{ text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--text-mute); padding:0 12px 12px; border-bottom:1px solid var(--border-soft); }
+  td{ padding:14px 12px; border-bottom:1px solid var(--border-soft); vertical-align:middle; }
+  tr:last-child td{ border-bottom:none; }
+  .badge{ display:inline-block; padding:3px 10px; border-radius:20px; font-size:11px; text-transform:uppercase; letter-spacing:.04em; }
+  .badge-ok{ background:rgba(184,147,90,.18); color:var(--accent); }
+  .badge-off{ background:rgba(130,128,111,.18); color:var(--text-mute); }
+  .badge-cancel{ background:rgba(180,98,63,.18); color:#E3AB93; }
+  .badge-pending{ background:rgba(184,147,90,.10); color:var(--text-dim); border:1px solid var(--border); }
+  .badge-done{ background:rgba(111,150,110,.18); color:#9FCB9E; }
+  .row-actions{ display:flex; gap:8px; flex-wrap:wrap; }
+  .icon-btn{ background:none; border:1px solid var(--border-soft); color:var(--text-dim); padding:6px 10px; border-radius:var(--radius-s); font-size:12px; }
+  .icon-btn:hover{ border-color:var(--accent); color:var(--accent); }
+
+  .modal-overlay{ position:fixed; inset:0; background:rgba(0,0,0,.6); display:flex; align-items:center; justify-content:center; z-index:100; padding:20px; }
+  .modal{ background:var(--bg-alt); border:1px solid var(--border); border-radius:var(--radius-m); padding:32px; max-width:480px; width:100%; max-height:88vh; overflow-y:auto; }
+  .modal h3{ margin:0 0 20px; font-size:19px; }
+  .modal-actions{ display:flex; justify-content:flex-end; gap:10px; margin-top:24px; }
+
+  .agenda-toolbar{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:18px; }
+  .agenda-toolbar input[type=date], .agenda-toolbar input[type=text]{ padding:10px 12px; background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--radius-m); color:var(--text); font-size:13px; }
+  .agenda-toolbar input[type=text]{ min-width:200px; }
+  .agenda-cards{ display:flex; flex-direction:column; gap:12px; }
+  .agenda-card{ background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--radius-m); padding:18px 20px; display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap; }
+  .ac-main{ min-width:0; }
+  .ac-top{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:4px; }
+  .ac-name{ font-family:'Fraunces',serif; font-size:17px; }
+  .ac-phone{ color:var(--text-mute); font-size:12px; margin-bottom:8px; }
+  .ac-service{ color:var(--accent); font-size:13px; font-weight:600; }
+  .ac-when{ color:var(--text-dim); font-size:13px; }
+  .ac-actions{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .status-pill{ display:inline-flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:11px; text-transform:uppercase; letter-spacing:.04em; }
+  .status-pill::before{ content:''; width:6px; height:6px; border-radius:50%; background:currentColor; }
+  .next-client-card{ background:linear-gradient(160deg,var(--surface-2),var(--surface)); border:1px solid var(--accent); border-radius:var(--radius-m); padding:24px; margin-bottom:24px; }
+  .next-client-card .lbl-top{ font-size:11px; color:var(--accent); text-transform:uppercase; letter-spacing:.08em; margin-bottom:12px; }
+  .next-client-card .nc-time{ font-family:'Fraunces',serif; font-size:32px; }
+  .next-client-card .nc-name{ font-size:16px; margin:4px 0 2px; }
+  .next-client-card .nc-meta{ color:var(--text-dim); font-size:13px; }
+  .detail-row{ display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border-soft); font-size:14px; }
+  .detail-row:last-child{ border-bottom:none; }
+  .detail-row span:first-child{ color:var(--text-mute); }
+  .history-item{ display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border-soft); font-size:13px; }
+  .history-item:last-child{ border-bottom:none; }
+  .day-block:last-child{ border-bottom:none; }
+  .day-block-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+  .day-block-head b{ font-size:14px; }
+  .range-row{ display:flex; gap:10px; align-items:center; margin-bottom:8px; }
+  .range-row input[type=time]{ padding:9px 10px; background:var(--surface-2); border:1px solid var(--border-soft); border-radius:var(--radius-s); color:var(--text); }
+  .toggle{ position:relative; width:40px; height:22px; }
+  .toggle input{ opacity:0; width:0; height:0; }
+  .toggle .track{ position:absolute; inset:0; background:var(--border); border-radius:20px; transition:.2s; cursor:pointer; }
+  .toggle .track::before{ content:''; position:absolute; width:16px; height:16px; left:3px; top:3px; background:var(--text); border-radius:50%; transition:.2s; }
+  .toggle input:checked + .track{ background:var(--accent); }
+  .toggle input:checked + .track::before{ transform:translateX(18px); background:var(--accent-contrast); }
+
+  .login-shell{ min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; }
+  .login-card{ width:100%; max-width:380px; background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--radius-m); padding:40px 32px; }
+  .login-card h2{ font-size:22px; margin:0 0 6px; }
+  .login-card p{ color:var(--text-dim); font-size:13px; margin:0 0 28px; }
+
+  .mobile-menu{ position:fixed; inset:0; background:var(--bg); z-index:60; padding:24px; display:none; flex-direction:column; }
+  .mobile-menu.open{ display:flex; }
+  .mobile-menu a, .mobile-menu button{ padding:18px 0; font-size:20px; border-bottom:1px solid var(--border-soft); font-family:'Fraunces',serif; text-align:left; background:none; border-left:none; border-right:none; border-top:none; color:var(--text); }
+
+  @media (max-width: 860px){
+    .nav-links{ display:none; }
+    .menu-toggle{ display:block; }
+    .about-grid, .location-grid{ grid-template-columns:1fr; gap:32px; }
+    .prado-grid{ grid-template-columns:180px 1fr; gap:24px; }
+    .footer-grid{ grid-template-columns:1fr 1fr; }
+    .admin-shell{ flex-direction:column; }
+    .admin-side{ width:100%; border-right:none; border-bottom:1px solid var(--border-soft); flex-direction:row; overflow-x:auto; padding:14px; align-items:center; }
+    .admin-side .brand{ display:none; }
+    .admin-nav{ display:flex; gap:4px; }
+    .admin-nav a, .admin-nav button{ white-space:nowrap; margin-bottom:0; }
+    .admin-main{ padding:24px 18px; }
+    section{ padding:64px 0; }
+    .hero{ padding:64px 0 56px; }
+  }
+  @media (max-width: 480px){
+    .prado-grid{ grid-template-columns:1fr; text-align:center; }
+    .prado-photo{ max-width:220px; margin:0 auto; }
+    .info-line{ text-align:left; }
+  }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+/* ============================================================
+   BARBEARIA DO PRADO — site, agendamento online e painel administrativo
+   Barbeiro responsável: Prado.
+   ============================================================ */
+
+const STORAGE_KEY = 'prado:data';
+const REAL_ADDRESS = 'Rua Marechal Deodoro, 655, Jardim Itália, Chapecó - SC, 89802-272';
+const REAL_WHATSAPP = '5549988851058'; // (49) 98885-1058
+
+const ICONS = {
+  whatsapp: `<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.39 1.26 4.81L2 22l5.42-1.42a9.87 9.87 0 0 0 4.62 1.18h.01c5.46 0 9.9-4.45 9.9-9.9C21.95 6.45 17.5 2 12.04 2zm0 18.1h-.01a8.2 8.2 0 0 1-4.18-1.14l-.3-.18-3.11.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.36c0-4.53 3.7-8.23 8.24-8.23 2.2 0 4.27.86 5.82 2.42a8.17 8.17 0 0 1 2.41 5.82c0 4.53-3.7 8.2-8.24 8.2zm4.51-6.15c-.25-.12-1.47-.72-1.7-.81-.23-.08-.39-.12-.56.13-.17.25-.64.81-.78.97-.14.17-.29.19-.53.06-.25-.12-1.04-.38-1.98-1.22-.73-.65-1.23-1.46-1.37-1.7-.14-.25-.02-.39.11-.51.11-.11.25-.29.37-.43.12-.15.16-.25.25-.42.08-.17.04-.31-.02-.44-.06-.12-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.42-.14 0-.31-.02-.48-.02s-.44.06-.67.31c-.23.25-.87.85-.87 2.08s.9 2.41 1.02 2.58c.12.17 1.77 2.7 4.29 3.79.6.26 1.07.41 1.44.53.6.19 1.15.16 1.59.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.15-1.18-.06-.11-.23-.17-.48-.29z"/></svg>`,
+  instagram: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg>`,
+  pin: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s7-7.58 7-12.5A7 7 0 0 0 5 9.5C5 14.42 12 22 12 22z"/><circle cx="12" cy="9.5" r="2.5"/></svg>`,
+  clock: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>`,
+  check: `<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>`,
+  chevL: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>`,
+  menu: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h16"/></svg>`,
+  close: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6l12 12M18 6 6 18"/></svg>`,
+};
+
+const WEEKDAYS = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+const WEEKDAYS_SHORT = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+
+function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
+
+function randomSalt(){
+  const arr = new Uint8Array(16);
+  crypto.getRandomValues(arr);
+  return Array.from(arr).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+async function hashPassword(password, salt){
+  const enc = new TextEncoder().encode(salt + ':' + password);
+  const buf = await crypto.subtle.digest('SHA-256', enc);
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+function defaultDB(){
+  return {
+    services: [
+      { id: uid(), name:'Cabelo', desc:'Corte com acabamento profissional.', price: 50, duration: 30, active:true },
+      { id: uid(), name:'Barba', desc:'Barba desenhada e finalizada com toalha quente.', price: 45, duration: 30, active:true },
+      { id: uid(), name:'Barba + Cabelo', desc:'Serviço completo: cabelo e barba no mesmo atendimento.', price: 95, duration: 60, active:true },
+      { id: uid(), name:'Depilação de nariz/orelha', desc:'Remoção rápida e discreta dos pelos do nariz e da orelha.', price: 30, duration: 15, active:true },
+      { id: uid(), name:'Máquina geral — Pente 1', desc:'Acabamento geral na máquina, pente número 1.', price: 25, duration: 20, active:true },
+      { id: uid(), name:'Pigmentação da barba', desc:'Pigmentação para uniformizar e preencher falhas na barba.', price: 24, duration: 30, active:true },
+      { id: uid(), name:'Sobrancelha', desc:'Acabamento e alinhamento de sobrancelha.', price: 15, duration: 15, active:true },
+    ],
+    appointments: [],
+    clients: {},
+    config: {
+      servicesVersion: 2,
+      barberName: 'Prado',
+      barberPhoto: '',
+      barberBio: '',
+      whatsapp: REAL_WHATSAPP,
+      instagram: '',
+      address: REAL_ADDRESS,
+      slotInterval: 30,
+      hours: {
+        0: { closed:true,  ranges: [] },
+        1: { closed:false, ranges: [ {open:'13:30', close:'19:30'} ] },
+        2: { closed:false, ranges: [ {open:'09:00', close:'12:00'}, {open:'13:30', close:'19:30'} ] },
+        3: { closed:false, ranges: [ {open:'09:00', close:'12:00'}, {open:'13:30', close:'19:30'} ] },
+        4: { closed:false, ranges: [ {open:'09:00', close:'12:00'}, {open:'13:30', close:'19:30'} ] },
+        5: { closed:false, ranges: [ {open:'09:00', close:'12:00'}, {open:'13:30', close:'19:30'} ] },
+        6: { closed:false, ranges: [ {open:'09:00', close:'17:00'} ] },
+      },
+      blockedSlots: [],
+      adminEmail: null,
+      adminSalt: null,
+      adminPasswordHash: null,
+    },
+  };
+}
+
+let DB = null;
+
+async function loadDB(){
+  try{
+    const res = await window.storage.get(STORAGE_KEY, true);
+    DB = res && res.value ? JSON.parse(res.value) : defaultDB();
+  }catch(e){
+    DB = defaultDB();
+  }
+  if(!DB.config.hours || !DB.config.hours[2] || !('ranges' in DB.config.hours[2])) {
+    DB.config.hours = defaultDB().config.hours;
+  }
+  if(!DB.config.address) DB.config.address = REAL_ADDRESS;
+  if(!DB.config.whatsapp) DB.config.whatsapp = REAL_WHATSAPP;
+  if(!DB.config.barberName) DB.config.barberName = 'Prado';
+  if(!DB.config.servicesVersion || DB.config.servicesVersion < 2){
+    DB.services = defaultDB().services;
+    DB.config.servicesVersion = 2;
+    await saveDB();
+  }
+}
+
+async function saveDB(){
+  try{
+    await window.storage.set(STORAGE_KEY, JSON.stringify(DB), true);
+  }catch(e){
+    console.error('Erro ao salvar', e);
+  }
+}
+
+/* ---------------- App / routing state ---------------- */
+let VIEW = 'public';
+let ADMIN_TAB = 'dashboard';
+let ADMIN_AUTHED = false;
+let inactivityTimer = null;
+const INACTIVITY_LIMIT_MS = 20*60*1000; // 20 minutos
+function resetInactivityTimer(){
+  if(inactivityTimer) clearTimeout(inactivityTimer);
+  if(!ADMIN_AUTHED) return;
+  inactivityTimer = setTimeout(()=>{
+    if(ADMIN_AUTHED){
+      ADMIN_AUTHED=false;
+      loginError='Sessão encerrada por inatividade. Faça login novamente.';
+      go('adminLogin');
+    }
+  }, INACTIVITY_LIMIT_MS);
+}
+document.addEventListener('click', ()=>{ if(ADMIN_AUTHED) resetInactivityTimer(); });
+document.addEventListener('keydown', ()=>{ if(ADMIN_AUTHED) resetInactivityTimer(); });
+let MOBILE_MENU_OPEN = false;
+
+let booking = { step:1, serviceId:null, date:null, time:null, name:'', phone:'', error:'', _recognized:false };
+let bookingConfirmed = null;
+
+let adminDateFilter = todayStr();
+let modal = null;
+let loginError = '';
+let apptFilter = 'upcoming';
+
+function todayStr(){ const d=new Date(); return d.toISOString().slice(0,10); }
+function fmtDate(str){
+  const [y,m,d] = str.split('-').map(Number);
+  const dt = new Date(y, m-1, d);
+  return `${WEEKDAYS_SHORT[dt.getDay()]}, ${d} ${['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'][m-1]}`;
+}
+function fmtMoney(n){ return 'R$ ' + Number(n).toFixed(2).replace('.', ','); }
+function escapeHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function waLink(msg){ return `https://wa.me/${DB.config.whatsapp}${msg?('?text='+encodeURIComponent(msg)):''}`; }
+function waLinkForClient(phoneDigits, msg){
+  let d = String(phoneDigits||'').replace(/\D/g,'');
+  if(d.length===10 || d.length===11) d = '55'+d; // assume BR number without country code
+  return `https://wa.me/${d}${msg?('?text='+encodeURIComponent(msg)):''}`;
+}
+
+function activeServices(){ return DB.services.filter(s=>s.active); }
+function getService(id){ return DB.services.find(s=>s.id===id); }
+
+function render(){
+  const app = document.getElementById('app');
+  const active = document.activeElement;
+  const activeId = active && active.id;
+  const selStart = active && typeof active.selectionStart === 'number' ? active.selectionStart : null;
+  const selEnd = active && typeof active.selectionEnd === 'number' ? active.selectionEnd : null;
+  if(VIEW==='public') app.innerHTML = renderPublic();
+  else if(VIEW==='booking') app.innerHTML = renderBookingPage();
+  else if(VIEW==='adminLogin') app.innerHTML = renderAdminLogin();
+  else if(VIEW==='admin') app.innerHTML = renderAdmin();
+  if(modal) app.innerHTML += renderModal();
+  if(activeId){
+    const el = document.getElementById(activeId);
+    if(el){
+      el.focus();
+      if(selStart!=null && el.setSelectionRange){ try{ el.setSelectionRange(selStart, selEnd); }catch(e){} }
+    } else {
+      window.scrollTo({top:0});
+    }
+  } else {
+    window.scrollTo({top:0});
+  }
+}
+function go(view){ VIEW=view; modal=null; render(); }
+
+/* ============================================================
+   PUBLIC SITE
+   ============================================================ */
+function renderPublic(){
+  const cfg = DB.config;
+  return `
+  <nav class="nav">
+    <div class="wrap nav-inner">
+      <div class="brand"><b>BARBEARIA</b> DO PRADO</div>
+      <div class="nav-links">
+        <a href="#sobre">Sobre</a>
+        <a href="#servicos">Serviços</a>
+        <a href="#prado">O Prado</a>
+        <a href="#local">Local</a>
+        <button class="btn btn-primary btn-sm" onclick="startBooking()">Agendar horário</button>
+      </div>
+      <button class="menu-toggle" onclick="toggleMobileMenu()">${ICONS.menu}</button>
+    </div>
+  </nav>
+  ${MOBILE_MENU_OPEN ? renderMobileMenu() : ''}
+
+  <header class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Barbearia · Chapecó, SC</p>
+      <h1>Barbearia<br/>do Prado</h1>
+      <p class="lead">Seu estilo, do seu jeito. Corte e barba com atenção aos detalhes, num atendimento pensado só para você.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" onclick="startBooking()">Agendar horário</button>
+        <a href="#servicos" class="btn btn-ghost">Conhecer serviços</a>
+        <a class="btn btn-whatsapp" target="_blank" href="${waLink('Olá! Vim pelo site e gostaria de agendar um horário.')}">${ICONS.whatsapp} WhatsApp</a>
+      </div>
+    </div>
+  </header>
+
+  <section id="sobre" class="section-border">
+    <div class="wrap about-grid">
+      <div>
+        <p class="eyebrow">Sobre nós</p>
+        <h2>Sobre a barbearia</h2>
+      </div>
+      <div>
+        <p>A Barbearia do Prado é um espaço dedicado ao cuidado masculino, unindo técnica, estilo e atenção em cada atendimento. Aqui, cada visita é pensada para que você saia satisfeito com o resultado e com a experiência.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="servicos" class="section-border bg-alt">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">O que fazemos</p>
+          <h2>Nossos serviços</h2>
+        </div>
+        <p>Escolha o serviço e agende no horário que funcionar melhor para você.</p>
+      </div>
+      ${activeServices().length ? `<div class="grid-services">
+        ${activeServices().map(s=>`
+          <div class="service-card">
+            <h3>${escapeHtml(s.name)}</h3>
+            <p>${escapeHtml(s.desc||'')}</p>
+            <div class="service-meta">
+              <div>
+                <div class="service-price">${fmtMoney(s.price)}</div>
+                <div class="service-time">${s.duration} min</div>
+              </div>
+              <button class="btn btn-ghost btn-sm" onclick="startBooking('${s.id}')">Agendar</button>
+            </div>
+          </div>
+        `).join('')}
+      </div>` : `<div class="empty-state">Nenhum serviço cadastrado no momento.</div>`}
+    </div>
+  </section>
+
+  <section id="prado" class="section-border">
+    <div class="wrap">
+      <p class="eyebrow">Quem corta</p>
+      <div class="prado-grid" style="margin-top:24px;">
+        <div class="prado-photo">${cfg.barberPhoto ? `<img src="${escapeHtml(cfg.barberPhoto)}"/>` : 'Fotografia em breve'}</div>
+        <div>
+          <h2 class="prado-name">Conheça o ${escapeHtml(cfg.barberName)}</h2>
+          <div class="prado-role">Barbeiro</div>
+          <div class="prado-text">
+            <p>${cfg.barberBio ? escapeHtml(cfg.barberBio) : 'Responsável por todos os atendimentos da Barbearia do Prado, unindo técnica, atenção e cuidado em cada serviço.'}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="local" class="bg-alt">
+    <div class="wrap location-grid">
+      <div>
+        <p class="eyebrow">Localização</p>
+        <h2 style="margin-bottom:28px;">Onde estamos</h2>
+        <div class="info-line">${ICONS.pin}<div><b>Barbearia do Prado</b><span>${escapeHtml(cfg.address)}</span></div></div>
+        <div class="info-line">${ICONS.clock}<div><b>Horário</b><span>${hoursSummary()}</span></div></div>
+        <div class="info-line">${ICONS.whatsapp}<div><b>WhatsApp</b><span>${formatPhoneDisplay(cfg.whatsapp)}</span></div></div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;">
+          <a class="btn btn-ghost" target="_blank" href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(cfg.address)}">Como chegar</a>
+          <a class="btn btn-whatsapp" target="_blank" href="${waLink('')}">${ICONS.whatsapp} Falar no WhatsApp</a>
+        </div>
+      </div>
+      <div class="map-box">
+        <iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          src="https://maps.google.com/maps?q=${encodeURIComponent(cfg.address)}&z=16&output=embed"
+          title="Mapa da Barbearia do Prado"></iframe>
+      </div>
+    </div>
+  </section>
+
+  ${renderFooter()}
+  <a class="wa-float" target="_blank" href="${waLink('Olá! Vim pelo site e gostaria de agendar um horário.')}" aria-label="WhatsApp">${ICONS.whatsapp}</a>
+  `;
+}
+
+function formatPhoneDisplay(digits){
+  const d = String(digits||'').replace(/\D/g,'');
+  if(d.length===13 && d.startsWith('55')) return `(${d.slice(2,4)}) ${d.slice(4,9)}-${d.slice(9)}`;
+  return digits;
+}
+
+function hoursSummary(){
+  const h = DB.config.hours;
+  const parts = [];
+  for(let d=0; d<7; d++){
+    if(h[d].closed || !h[d].ranges.length){ continue; }
+    parts.push(`${WEEKDAYS_SHORT[d]} ${h[d].ranges.map(r=>`${r.open}–${r.close}`).join(' e ')}`);
+  }
+  return parts.length ? parts.join(' · ') : 'A definir';
+}
+
+function renderMobileMenu(){
+  return `<div class="mobile-menu open">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <div class="brand"><b>BARBEARIA</b> DO PRADO</div>
+      <button class="menu-toggle" onclick="toggleMobileMenu()" style="display:block">${ICONS.close}</button>
+    </div>
+    <a href="#sobre" onclick="toggleMobileMenu()">Sobre</a>
+    <a href="#servicos" onclick="toggleMobileMenu()">Serviços</a>
+    <a href="#prado" onclick="toggleMobileMenu()">O Prado</a>
+    <a href="#local" onclick="toggleMobileMenu()">Local</a>
+    <button onclick="toggleMobileMenu();startBooking()">Agendar horário</button>
+  </div>`;
+}
+function toggleMobileMenu(){ MOBILE_MENU_OPEN=!MOBILE_MENU_OPEN; render(); }
+
+function renderFooter(){
+  const cfg = DB.config;
+  return `<footer>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <div class="brand" style="margin-bottom:14px;"><b>BARBEARIA</b> DO PRADO</div>
+          <span style="max-width:32ch">Cuidado masculino com estilo, técnica e atenção aos detalhes.</span>
+        </div>
+        <div>
+          <h4>Navegação</h4>
+          <a href="javascript:void(0)" onclick="go('public')">Início</a>
+          <a href="#servicos">Serviços</a>
+          <a href="javascript:void(0)" onclick="startBooking()">Agendamento</a>
+          <a href="#sobre">Sobre</a>
+          <a href="#local">Localização</a>
+        </div>
+        <div>
+          <h4>Contato</h4>
+          <span>${escapeHtml(cfg.address)}</span>
+          <a href="${waLink('')}" target="_blank">${formatPhoneDisplay(cfg.whatsapp)} (WhatsApp)</a>
+          ${cfg.instagram ? `<a href="https://instagram.com/${cfg.instagram.replace('@','')}" target="_blank">@${cfg.instagram.replace('@','')}</a>` : ``}
+        </div>
+        <div>
+          <h4>Funcionamento</h4>
+          <span>${hoursSummary()}</span>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© ${new Date().getFullYear()} Barbearia do Prado</span>
+        <a href="javascript:void(0)" onclick="go('adminLogin')">Área administrativa</a>
+      </div>
+    </div>
+  </footer>`;
+}
+
+/* ============================================================
+   BOOKING FLOW  (serviço → data/horário → dados → confirmação)
+   ============================================================ */
+function startBooking(serviceId){
+  booking = { step:1, serviceId: serviceId||null, date:null, time:null, name:'', phone:'', error:'', _recognized:false };
+  bookingConfirmed = null;
+  go('booking');
+}
+
+function renderBookingPage(){
+  if(bookingConfirmed) return renderBookingSuccess();
+  const totalSteps = 4;
+  return `
+  <div class="booking-page">
+    <div class="wrap">
+      <div class="booking-header">
+        <div class="brand"><b>BARBEARIA</b> DO PRADO</div>
+        <button class="btn btn-ghost btn-sm" onclick="go('public')">Voltar ao site</button>
+      </div>
+      <div class="booking-card">
+        <div class="steps">
+          ${Array.from({length:totalSteps}).map((_,i)=>`<i class="${i < booking.step ? 'done':''}"></i>`).join('')}
+        </div>
+        ${bookingStepContent()}
+      </div>
+    </div>
+  </div>`;
+}
+
+function bookingStepContent(){
+  if(booking.step===1) return stepService();
+  if(booking.step===2) return stepDateTime();
+  if(booking.step===3) return stepInfo();
+  if(booking.step===4) return stepConfirm();
+  return '';
+}
+
+function stepService(){
+  const list = activeServices();
+  return `
+    <h2 class="step-title">Escolha o serviço</h2>
+    <p class="step-sub">Atendimento com o Prado. Selecione o que você quer fazer hoje.</p>
+    <div class="option-list">
+      ${list.map(s=>`
+        <button class="option-item ${booking.serviceId===s.id?'selected':''}" onclick="selectService('${s.id}')">
+          <span><span class="oi-name">${escapeHtml(s.name)}</span><br/><span class="oi-sub">${s.duration} min</span></span>
+          <span class="oi-right">${fmtMoney(s.price)}</span>
+        </button>
+      `).join('')}
+    </div>
+    ${bookingNav(false, !!booking.serviceId)}
+  `;
+}
+function selectService(id){ booking.serviceId=id; render(); }
+
+function nextDates(n){
+  const out=[]; const d = new Date();
+  for(let i=0;i<n;i++){ const dt = new Date(d); dt.setDate(d.getDate()+i); out.push(dt.toISOString().slice(0,10)); }
+  return out;
+}
+
+function stepDateTime(){
+  const dates = nextDates(21);
+  const svc = getService(booking.serviceId);
+  const slots = booking.date ? getAvailableSlots(booking.date, svc?svc.duration:30) : [];
+  return `
+    <h2 class="step-title">Data e horário</h2>
+    <p class="step-sub">Escolha o melhor dia e horário para você.</p>
+    <div class="date-scroller">
+      ${dates.map(d=>{
+        const dow = new Date(d+'T00:00:00').getDay();
+        const closed = DB.config.hours[dow].closed || !DB.config.hours[dow].ranges.length;
+        return `<button class="date-chip ${booking.date===d?'selected':''}" ${closed?'disabled':''} onclick="selectDate('${d}')">
+          <div class="dow">${WEEKDAYS_SHORT[dow]}</div>
+          <div class="num">${Number(d.slice(8,10))}</div>
+        </button>`;
+      }).join('')}
+    </div>
+    ${booking.date ? (slots.length ? `<div class="slot-grid">
+        ${slots.map(t=>`<button class="slot-btn ${booking.time===t?'selected':''}" onclick="selectTime('${t}')">${t}</button>`).join('')}
+      </div>` : `<div class="empty-state">Não há horários disponíveis nesta data. Tente outro dia.</div>`) : ''}
+    ${bookingNav(true, !!(booking.date && booking.time))}
+  `;
+}
+function selectDate(d){ booking.date=d; booking.time=null; render(); }
+function selectTime(t){ booking.time=t; render(); }
+
+function timeToMin(t){ const [h,m]=t.split(':').map(Number); return h*60+m; }
+function minToTime(m){ const h=Math.floor(m/60), mm=m%60; return String(h).padStart(2,'0')+':'+String(mm).padStart(2,'0'); }
+
+function getAvailableSlots(date, duration){
+  const dow = new Date(date+'T00:00:00').getDay();
+  const hoursCfg = DB.config.hours[dow];
+  if(hoursCfg.closed || !hoursCfg.ranges.length) return [];
+  const interval = DB.config.slotInterval || 30;
+  const now = new Date();
+  const isToday = date === todayStr();
+  const nowM = now.getHours()*60+now.getMinutes();
+
+  const dayAppts = DB.appointments.filter(a=>a.status!=='cancelled' && a.date===date);
+  const dayBlocks = DB.config.blockedSlots.filter(b=>b.date===date);
+
+  const slots=[];
+  hoursCfg.ranges.forEach(range=>{
+    const openM = timeToMin(range.open), closeM = timeToMin(range.close);
+    for(let m=openM; m+duration<=closeM; m+=interval){
+      if(isToday && m <= nowM) continue;
+      const slotStart=m, slotEnd=m+duration;
+      const conflictAppt = dayAppts.some(a=>{
+        const aSvc = getService(a.serviceId);
+        const aDur = aSvc ? aSvc.duration : 30;
+        const aStart = timeToMin(a.time), aEnd = aStart+aDur;
+        return slotStart < aEnd && aStart < slotEnd;
+      });
+      const conflictBlock = dayBlocks.some(b=>timeToMin(b.time) === slotStart);
+      if(!conflictAppt && !conflictBlock) slots.push(minToTime(m));
+    }
+  });
+  return slots;
+}
+
+function stepInfo(){
+  return `
+    <h2 class="step-title">Seus dados</h2>
+    <p class="step-sub">Informe seu telefone — se você já agendou antes, preenchemos seu nome automaticamente.</p>
+    ${booking.error ? `<div class="error-box">${escapeHtml(booking.error)}</div>` : ''}
+    <div class="field">
+      <label>Telefone (WhatsApp)</label>
+      <input type="tel" placeholder="(49) 9 9999-9999" value="${escapeHtml(booking.phone)}" oninput="onPhoneInput(this.value)" />
+      ${booking._recognized ? `<div class="hint">Bem-vindo de volta, ${escapeHtml(booking.name)}! Confirme ou ajuste seu nome abaixo.</div>` : ''}
+    </div>
+    <div class="field">
+      <label>Nome</label>
+      <input type="text" placeholder="Seu nome" value="${escapeHtml(booking.name)}" oninput="booking.name=this.value" />
+    </div>
+    ${bookingNav(true, true, true)}
+  `;
+}
+function onPhoneInput(v){
+  booking.phone=v;
+  const digits = v.replace(/\D/g,'');
+  const client = DB.clients[digits];
+  if(client){ booking.name = client.name; booking._recognized = true; }
+  else { booking._recognized = false; }
+  render();
+}
+
+function stepConfirm(){
+  const svc = getService(booking.serviceId);
+  return `
+    <h2 class="step-title">Confirme seu agendamento</h2>
+    <p class="step-sub">Revise os dados antes de confirmar.</p>
+    <div class="summary-card">
+      <div class="summary-row"><span>Serviço</span><span>${escapeHtml(svc?svc.name:'—')}</span></div>
+      <div class="summary-row"><span>Profissional</span><span>${escapeHtml(DB.config.barberName)}</span></div>
+      <div class="summary-row"><span>Data</span><span>${fmtDate(booking.date)}</span></div>
+      <div class="summary-row"><span>Horário</span><span>${booking.time}</span></div>
+      <div class="summary-row"><span>Nome</span><span>${escapeHtml(booking.name)}</span></div>
+      <div class="summary-row"><span>Telefone</span><span>${escapeHtml(booking.phone)}</span></div>
+      <div class="summary-row"><span>Valor</span><span>${svc?fmtMoney(svc.price):'—'}</span></div>
+    </div>
+    ${booking.error ? `<div class="error-box">${escapeHtml(booking.error)}</div>` : ''}
+    <div class="booking-nav">
+      <button class="btn btn-ghost" onclick="bookingBack()">${ICONS.chevL} Voltar</button>
+      <button class="btn btn-primary" id="confirm-btn" onclick="confirmBooking()">Confirmar agendamento</button>
+    </div>
+  `;
+}
+
+function bookingNav(showBack, canNext, isLastBeforeConfirm){
+  return `<div class="booking-nav">
+    ${showBack ? `<button class="btn btn-ghost" onclick="bookingBack()">${ICONS.chevL} Voltar</button>` : `<span></span>`}
+    <button class="btn btn-primary" ${canNext?'':'disabled'} onclick="bookingNext()">${isLastBeforeConfirm?'Revisar':'Continuar'}</button>
+  </div>`;
+}
+
+function bookingBack(){ booking.step = Math.max(1, booking.step-1); booking.error=''; render(); }
+function bookingNext(){
+  booking.error='';
+  if(booking.step===1 && !booking.serviceId) return;
+  if(booking.step===2 && !(booking.date && booking.time)) return;
+  if(booking.step===3){
+    const digits = booking.phone.replace(/\D/g,'');
+    if(digits.length<8){ booking.error='Informe um telefone válido.'; render(); return; }
+    if(!booking.name.trim()){ booking.error='Informe seu nome.'; render(); return; }
+  }
+  booking.step = Math.min(4, booking.step+1);
+  render();
+}
+
+async function confirmBooking(){
+  const btn = document.getElementById('confirm-btn');
+  if(btn){ btn.disabled=true; btn.innerHTML = '<span class="spinner"></span>'; }
+  const svc = getService(booking.serviceId);
+  const slots = getAvailableSlots(booking.date, svc?svc.duration:30);
+  if(!slots.includes(booking.time)){
+    booking.error = 'Esse horário acabou de ser reservado. Escolha outro horário.';
+    booking.step = 2; booking.time=null;
+    render();
+    return;
+  }
+  const digits = booking.phone.replace(/\D/g,'');
+  const appt = {
+    id: uid(), serviceId: booking.serviceId, date: booking.date, time: booking.time,
+    name: booking.name.trim(), phone: digits, status: 'confirmed', createdAt: new Date().toISOString(),
+  };
+  DB.appointments.push(appt);
+  if(!DB.clients[digits]) DB.clients[digits] = { name: appt.name, phone: digits, history: [] };
+  else DB.clients[digits].name = appt.name;
+  DB.clients[digits].history.push(appt.id);
+  await saveDB();
+  bookingConfirmed = appt;
+  render();
+}
+
+function renderBookingSuccess(){
+  const svc = getService(bookingConfirmed.serviceId);
+  const msg = `Olá! Acabei de agendar ${svc?svc.name:''} para ${fmtDate(bookingConfirmed.date)} às ${bookingConfirmed.time}. Meu nome: ${bookingConfirmed.name}.`;
+  return `<div class="booking-page"><div class="wrap">
+    <div class="booking-card success-box">
+      <div class="success-icon">${ICONS.check}</div>
+      <h2>Agendamento confirmado!</h2>
+      <p class="lead2">Te esperamos na Barbearia do Prado.</p>
+      <div class="summary-card" style="text-align:left">
+        <div class="summary-row"><span>Serviço</span><span>${escapeHtml(svc?svc.name:'—')}</span></div>
+        <div class="summary-row"><span>Profissional</span><span>${escapeHtml(DB.config.barberName)}</span></div>
+        <div class="summary-row"><span>Data</span><span>${fmtDate(bookingConfirmed.date)}</span></div>
+        <div class="summary-row"><span>Horário</span><span>${bookingConfirmed.time}</span></div>
+        <div class="summary-row"><span>Nome</span><span>${escapeHtml(bookingConfirmed.name)}</span></div>
+      </div>
+      <div class="success-actions">
+        <a class="btn btn-whatsapp btn-block" target="_blank" href="${waLink(msg)}">${ICONS.whatsapp} Confirmar por WhatsApp</a>
+        <button class="btn btn-ghost btn-block" onclick="go('public')">Voltar ao início</button>
+      </div>
+    </div>
+  </div></div>`;
+}
+
+/* ============================================================
+   ADMIN — LOGIN
+   ============================================================ */
+function renderAdminLogin(){
+  const needsSetup = !DB.config.adminPasswordHash || !DB.config.adminEmail;
+  const locked = loginLockUntil && Date.now() < loginLockUntil;
+  return `<div class="login-shell">
+    <div class="login-card">
+      <div class="brand" style="margin-bottom:24px;"><b>BARBEARIA</b> DO PRADO</div>
+      ${needsSetup ? `
+        <h2>Criar a conta do Prado</h2>
+        <p>Defina o e-mail e a senha de acesso ao painel administrativo.</p>
+        <div class="field"><label>E-mail</label><input type="email" id="setup-email" placeholder="prado@barbeariadoprado.com.br"/></div>
+        <div class="field"><label>Nova senha</label><input type="password" id="setup-pass1" /></div>
+        <div class="field"><label>Confirmar senha</label><input type="password" id="setup-pass2" /></div>
+        ${modalErrorBox()}
+        <button class="btn btn-primary btn-block" onclick="setupAdminPassword()">Criar acesso</button>
+      ` : `
+        <h2>Área administrativa</h2>
+        <p>Acesso restrito ao Prado.</p>
+        <div class="field"><label>E-mail</label><input type="email" id="login-email" ${locked?'disabled':''} onkeydown="if(event.key==='Enter')adminLogin()"/></div>
+        <div class="field"><label>Senha</label><input type="password" id="login-pass" ${locked?'disabled':''} onkeydown="if(event.key==='Enter')adminLogin()"/></div>
+        ${modalErrorBox()}
+        <button class="btn btn-primary btn-block" ${locked?'disabled':''} onclick="adminLogin()">Entrar</button>
+      `}
+      <button class="btn btn-ghost btn-block" style="margin-top:12px" onclick="go('public')">Voltar ao site</button>
+    </div>
+  </div>`;
+}
+function modalErrorBox(){ return loginError ? `<div class="error-box">${escapeHtml(loginError)}</div>` : ''; }
+
+async function setupAdminPassword(){
+  const email = document.getElementById('setup-email').value.trim().toLowerCase();
+  const p1 = document.getElementById('setup-pass1').value;
+  const p2 = document.getElementById('setup-pass2').value;
+  if(!email.includes('@')){ loginError='Informe um e-mail válido.'; render(); return; }
+  if(p1.length<6){ loginError='A senha deve ter pelo menos 6 caracteres.'; render(); return; }
+  if(p1!==p2){ loginError='As senhas não coincidem.'; render(); return; }
+  const salt = randomSalt();
+  DB.config.adminEmail = email;
+  DB.config.adminSalt = salt;
+  DB.config.adminPasswordHash = await hashPassword(p1, salt);
+  await saveDB();
+  loginError=''; loginAttempts=0; loginLockUntil=0; ADMIN_AUTHED = true; resetInactivityTimer(); go('admin');
+}
+let loginAttempts = 0;
+let loginLockUntil = 0;
+async function adminLogin(){
+  if(loginLockUntil && Date.now() < loginLockUntil){
+    const secs = Math.ceil((loginLockUntil-Date.now())/1000);
+    loginError = `Muitas tentativas. Tente novamente em ${secs}s.`; render(); return;
+  }
+  const email = document.getElementById('login-email').value.trim().toLowerCase();
+  const p = document.getElementById('login-pass').value;
+  const hash = await hashPassword(p, DB.config.adminSalt || '');
+  if(email === DB.config.adminEmail && hash === DB.config.adminPasswordHash){
+    loginError=''; loginAttempts=0; loginLockUntil=0; ADMIN_AUTHED=true; resetInactivityTimer(); go('admin');
+  } else {
+    loginAttempts++;
+    if(loginAttempts>=5){
+      loginLockUntil = Date.now() + 60000;
+      loginError = 'Muitas tentativas incorretas. Aguarde 60 segundos.';
+    } else {
+      loginError='E-mail ou senha incorretos.';
+    }
+    render();
+  }
+}
+function adminLogout(){ ADMIN_AUTHED=false; if(inactivityTimer) clearTimeout(inactivityTimer); go('public'); }
+
+/* ============================================================
+   ADMIN — SHELL
+   ============================================================ */
+const ADMIN_TABS = [
+  {id:'dashboard', label:'Dashboard'},
+  {id:'agenda', label:'Minha Agenda'},
+  {id:'appointments', label:'Agendamentos'},
+  {id:'services', label:'Serviços'},
+  {id:'clients', label:'Clientes'},
+  {id:'hours', label:'Horários'},
+  {id:'settings', label:'Configurações'},
+];
+
+function renderAdmin(){
+  if(!ADMIN_AUTHED) { go('adminLogin'); return ''; }
+  return `<div class="admin-shell">
+    <aside class="admin-side">
+      <div class="brand"><b>PRADO</b> ADMIN</div>
+      <nav class="admin-nav">
+        ${ADMIN_TABS.map(t=>`<a class="${ADMIN_TAB===t.id?'active':''}" href="javascript:void(0)" onclick="setAdminTab('${t.id}')">${t.label}</a>`).join('')}
+        <button onclick="go('public')" style="margin-top:8px;color:var(--text-mute)">Ver site</button>
+        <button onclick="adminLogout()" style="color:var(--danger)">Sair</button>
+      </nav>
+    </aside>
+    <main class="admin-main">
+      ${adminTabContent()}
+    </main>
+  </div>`;
+}
+function setAdminTab(id){ ADMIN_TAB=id; modal=null; render(); }
+
+function adminTabContent(){
+  if(ADMIN_TAB==='dashboard') return adminDashboard();
+  if(ADMIN_TAB==='agenda') return adminAgenda();
+  if(ADMIN_TAB==='appointments') return adminAppointments();
+  if(ADMIN_TAB==='services') return adminServices();
+  if(ADMIN_TAB==='clients') return adminClients();
+  if(ADMIN_TAB==='hours') return adminHours();
+  if(ADMIN_TAB==='settings') return adminSettings();
+  return '';
+}
+
+/* ---------------- Dashboard ---------------- */
+function adminDashboard(){
+  const today = todayStr();
+  const todaysActive = DB.appointments.filter(a=>a.date===today && a.status!=='cancelled' && a.status!=='completed').sort((a,b)=>a.time.localeCompare(b.time));
+  const completedToday = DB.appointments.filter(a=>a.date===today && a.status==='completed').length;
+  const cancelledToday = DB.appointments.filter(a=>a.date===today && a.status==='cancelled').length;
+  const totalToday = DB.appointments.filter(a=>a.date===today && a.status!=='cancelled').length;
+  const upcoming = DB.appointments.filter(a=>a.date>today && a.status!=='cancelled');
+  const revenueToday = DB.appointments.filter(a=>a.date===today && a.status!=='cancelled').reduce((sum,a)=>{ const s=getService(a.serviceId); return sum + (s?s.price:0); },0);
+  const next = getNextAppointment();
+
+  return `
+    <div class="admin-topbar"><h1>Dashboard</h1></div>
+    ${next ? `
+      <div class="next-client-card">
+        <div class="lbl-top">${next.date===today ? 'Próximo cliente — hoje' : 'Próximo cliente — '+fmtDate(next.date)}</div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;">
+          <div>
+            <div class="nc-time">${next.time}</div>
+            <div class="nc-name">${escapeHtml(next.name)}</div>
+            <div class="nc-meta">${escapeHtml(getService(next.serviceId)?.name || '—')} · ${formatPhoneDisplayAdmin(next.phone)}</div>
+          </div>
+          <div class="ac-actions">
+            <button class="btn btn-ghost btn-sm" onclick="openApptDetail('${next.id}')">Ver agendamento</button>
+            <a class="btn btn-primary btn-sm" target="_blank" href="${waLinkForClient(next.phone)}">${ICONS.whatsapp}</a>
+          </div>
+        </div>
+      </div>
+    ` : `<div class="empty-state" style="margin-bottom:24px;">Nenhum próximo cliente agendado.</div>`}
+    <div class="kpi-grid">
+      <div class="kpi-card"><div class="num">${totalToday}</div><div class="lbl">Agendamentos hoje</div></div>
+      <div class="kpi-card"><div class="num">${completedToday}</div><div class="lbl">Concluídos hoje</div></div>
+      <div class="kpi-card"><div class="num">${cancelledToday}</div><div class="lbl">Cancelados hoje</div></div>
+      <div class="kpi-card"><div class="num">${upcoming.length}</div><div class="lbl">Próximos agendamentos</div></div>
+      <div class="kpi-card"><div class="num">${Object.keys(DB.clients).length}</div><div class="lbl">Clientes</div></div>
+      <div class="kpi-card"><div class="num">${fmtMoney(revenueToday)}</div><div class="lbl">Faturamento previsto hoje</div></div>
+    </div>
+    <div class="panel">
+      <h3>Agenda de hoje</h3>
+      ${todaysActive.length ? renderAgendaCards(todaysActive) : `<div class="empty-state">Nenhum agendamento pendente para hoje.</div>`}
+    </div>
+  `;
+}
+function formatPhoneDisplayAdmin(digits){
+  const d = String(digits||'').replace(/\D/g,'');
+  if(d.length>=10){ return `(${d.slice(-11,-9)}) ${d.slice(-9,-4)}-${d.slice(-4)}`; }
+  return digits;
+}
+function getNextAppointment(){
+  const today = todayStr();
+  const nowMin = new Date().getHours()*60 + new Date().getMinutes();
+  const candidates = DB.appointments.filter(a =>
+    (a.status==='confirmed' || a.status==='pending') &&
+    (a.date>today || (a.date===today && timeToMin(a.time) >= nowMin))
+  );
+  candidates.sort((a,b)=> (a.date+a.time).localeCompare(b.date+b.time));
+  return candidates[0] || null;
+}
+
+function apptTable(list, opts){
+  opts = opts || {};
+  return `<table><thead><tr>
+    <th>Horário</th><th>Cliente</th><th>Serviço</th>${opts.showDate?'<th>Data</th>':''}<th>Status</th><th></th>
+  </tr></thead><tbody>
+    ${list.map(a=>{
+      const svc = getService(a.serviceId);
+      return `<tr>
+        <td>${a.time}</td>
+        <td>${escapeHtml(a.name)}<br/><span style="color:var(--text-mute);font-size:12px">${escapeHtml(a.phone)}</span></td>
+        <td>${svc?escapeHtml(svc.name):'—'}</td>
+        ${opts.showDate?`<td>${fmtDate(a.date)}</td>`:''}
+        <td><span class="badge ${statusBadgeClass(a.status)}">${statusLabel(a.status)}</span></td>
+        <td class="row-actions">
+          ${a.status!=='cancelled' && a.status!=='completed' ? `
+            <button class="icon-btn" onclick="openEditAppt('${a.id}')">Editar</button>
+            <button class="icon-btn" onclick="setApptStatus('${a.id}','completed')">Concluir</button>
+            <button class="icon-btn" onclick="cancelAppt('${a.id}')">Cancelar</button>
+          ` : ''}
+        </td>
+      </tr>`;
+    }).join('')}
+  </tbody></table>`;
+}
+
+function renderAgendaCards(list){
+  const today = todayStr();
+  const tomorrow = nextDates(2)[1];
+  return `<div class="agenda-cards">
+    ${list.map(a=>{
+      const svc = getService(a.serviceId);
+      const whenLabel = a.date===today ? 'Hoje' : (a.date===tomorrow ? 'Amanhã' : fmtDate(a.date));
+      return `<div class="agenda-card">
+        <div class="ac-main">
+          <div class="ac-top">
+            <span class="ac-name">${escapeHtml(a.name)}</span>
+            <span class="status-pill" style="color:${statusPillColor(a.status)};background:${statusPillColor(a.status)}22;">${statusLabel(a.status)}</span>
+          </div>
+          <div class="ac-phone">${formatPhoneDisplayAdmin(a.phone)}</div>
+          <div class="ac-service">${svc?escapeHtml(svc.name):'—'}</div>
+          <div class="ac-when">${whenLabel} • ${a.time}</div>
+        </div>
+        <div class="ac-actions">
+          <button class="btn btn-ghost btn-sm" onclick="openApptDetail('${a.id}')">Ver detalhes</button>
+          <a class="btn btn-whatsapp btn-sm" target="_blank" href="${waLinkForClient(a.phone)}">${ICONS.whatsapp}</a>
+        </div>
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+function statusPillColor(s){ return {confirmed:'#B8935A', pending:'#82806F', completed:'#9FCB9E', cancelled:'#E3AB93'}[s] || '#B8935A'; }
+
+/* ---------------- Agenda ---------------- */
+let agendaQuickFilter = 'today';
+let agendaSearch = '';
+function getAgendaList(){
+  const today = todayStr();
+  const tomorrow = nextDates(2)[1];
+  if(agendaSearch.trim()){
+    const qText = agendaSearch.trim().toLowerCase();
+    const qDigits = qText.replace(/\D/g,'');
+    return DB.appointments
+      .filter(a => a.name.toLowerCase().includes(qText) || (qDigits && a.phone.includes(qDigits)))
+      .sort((a,b)=> (a.date+a.time).localeCompare(b.date+b.time));
+  }
+  if(agendaQuickFilter==='custom'){
+    return DB.appointments.filter(a=>a.date===adminDateFilter && a.status!=='cancelled').sort((a,b)=>a.time.localeCompare(b.time));
+  }
+  if(agendaQuickFilter==='tomorrow'){
+    return DB.appointments.filter(a=>a.date===tomorrow && a.status!=='cancelled').sort((a,b)=>a.time.localeCompare(b.time));
+  }
+  if(agendaQuickFilter==='upcoming'){
+    const week = nextDates(7);
+    return DB.appointments.filter(a=>week.includes(a.date) && a.status!=='cancelled').sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+  }
+  // today
+  return DB.appointments.filter(a=>a.date===today && a.status!=='cancelled').sort((a,b)=>a.time.localeCompare(b.time));
+}
+function setAgendaQuickFilter(f){ agendaQuickFilter=f; agendaSearch=''; render(); }
+function adminAgenda(){
+  const list = getAgendaList();
+  const today = todayStr();
+  const headTitle = agendaSearch.trim() ? `Resultados para "${agendaSearch.trim()}"`
+    : agendaQuickFilter==='today' ? `Agenda de hoje — ${fmtDate(today)}`
+    : agendaQuickFilter==='tomorrow' ? `Amanhã — ${fmtDate(nextDates(2)[1])}`
+    : agendaQuickFilter==='upcoming' ? `Próximos 7 dias`
+    : `${fmtDate(adminDateFilter)}`;
+  return `
+    <div class="admin-topbar"><h1>Minha Agenda</h1></div>
+    <div class="agenda-toolbar">
+      <button class="btn ${agendaQuickFilter==='today'&&!agendaSearch?'btn-primary':'btn-ghost'} btn-sm" onclick="setAgendaQuickFilter('today')">Hoje</button>
+      <button class="btn ${agendaQuickFilter==='tomorrow'&&!agendaSearch?'btn-primary':'btn-ghost'} btn-sm" onclick="setAgendaQuickFilter('tomorrow')">Amanhã</button>
+      <button class="btn ${agendaQuickFilter==='upcoming'&&!agendaSearch?'btn-primary':'btn-ghost'} btn-sm" onclick="setAgendaQuickFilter('upcoming')">Próximos dias</button>
+      <input type="date" value="${adminDateFilter}" onchange="adminDateFilter=this.value;agendaQuickFilter='custom';agendaSearch='';render()"/>
+      <input type="text" id="agenda-search-input" placeholder="Pesquisar cliente por nome ou telefone" value="${escapeHtml(agendaSearch)}" oninput="agendaSearch=this.value;render()"/>
+    </div>
+    <div class="panel">
+      <h3>${headTitle}</h3>
+      ${list.length ? renderAgendaCards(list) : `<div class="empty-state">Nenhum agendamento encontrado.</div>`}
+    </div>
+    <div class="panel">
+      <h3>Outras ações</h3>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn btn-ghost btn-sm" onclick="openBlockSlot()">Bloquear horário</button>
+        <button class="btn btn-primary btn-sm" onclick="openManualAppt()">Novo agendamento manual</button>
+      </div>
+      ${blockedSlotsPanel()}
+    </div>
+  `;
+}
+function blockedSlotsPanel(){
+  const list = DB.config.blockedSlots.filter(b=>b.date===adminDateFilter);
+  if(!list.length) return '';
+  return `<div class="panel"><h3>Horários bloqueados</h3>
+    <table><thead><tr><th>Horário</th><th></th></tr></thead><tbody>
+    ${list.map(b=>`<tr><td>${b.time}</td>
+      <td><button class="icon-btn" onclick="removeBlock('${b.id}')">Desbloquear</button></td></tr>`).join('')}
+    </tbody></table></div>`;
+}
+async function removeBlock(id){ DB.config.blockedSlots = DB.config.blockedSlots.filter(b=>b.id!==id); await saveDB(); render(); }
+function openBlockSlot(){ modal = {type:'blockSlot', date: adminDateFilter, time:'09:00'}; render(); }
+async function submitBlockSlot(){
+  const date = document.getElementById('m-block-date').value;
+  const time = document.getElementById('m-block-time').value;
+  DB.config.blockedSlots.push({id:uid(), date, time});
+  await saveDB(); modal=null; render();
+}
+
+function openManualAppt(){ modal = {type:'manualAppt'}; render(); }
+async function submitManualAppt(){
+  const serviceId = document.getElementById('m-appt-service').value;
+  const date = document.getElementById('m-appt-date').value;
+  const time = document.getElementById('m-appt-time').value;
+  const name = document.getElementById('m-appt-name').value.trim();
+  const phone = document.getElementById('m-appt-phone').value.replace(/\D/g,'');
+  const status = document.getElementById('m-appt-status').value;
+  if(!serviceId || !date || !time || !name || phone.length<8){ alert('Preencha todos os campos obrigatórios.'); return; }
+  const appt = {id:uid(), serviceId, date, time, name, phone, status, createdAt:new Date().toISOString()};
+  DB.appointments.push(appt);
+  if(!DB.clients[phone]) DB.clients[phone] = {name, phone, history:[]};
+  else DB.clients[phone].name = name;
+  DB.clients[phone].history.push(appt.id);
+  await saveDB(); modal=null; render();
+}
+
+function statusLabel(s){ return {confirmed:'Confirmado', pending:'Pendente', cancelled:'Cancelado', completed:'Concluído'}[s] || 'Confirmado'; }
+function statusBadgeClass(s){ return {confirmed:'badge-ok', pending:'badge-pending', cancelled:'badge-cancel', completed:'badge-done'}[s] || 'badge-ok'; }
+async function setApptStatus(id, status){
+  const a = DB.appointments.find(x=>x.id===id);
+  if(a) a.status = status;
+  await saveDB(); render();
+}
+async function cancelAppt(id){
+  if(!confirm('Cancelar este agendamento?')) return;
+  const a = DB.appointments.find(x=>x.id===id);
+  if(a) a.status='cancelled';
+  await saveDB(); render();
+}
+function openEditAppt(id){ modal = {type:'editAppt', id}; render(); }
+async function submitEditAppt(id){
+  const a = DB.appointments.find(x=>x.id===id);
+  if(!a) return;
+  a.date = document.getElementById('m-edit-date').value;
+  a.time = document.getElementById('m-edit-time').value;
+  a.serviceId = document.getElementById('m-edit-service').value;
+  await saveDB(); modal=null; render();
+}
+
+/* ---------------- Appointments (full list) ---------------- */
+function adminAppointments(){
+  const today = todayStr();
+  let list = DB.appointments.slice().sort((a,b)=> (a.date+a.time).localeCompare(b.date+b.time));
+  if(apptFilter==='upcoming') list = list.filter(a=>a.date>=today && a.status!=='cancelled');
+  if(apptFilter==='past') list = list.filter(a=>a.date<today && a.status!=='cancelled');
+  if(apptFilter==='cancelled') list = list.filter(a=>a.status==='cancelled');
+  if(apptFilter==='completed') list = list.filter(a=>a.status==='completed');
+  return `
+    <div class="admin-topbar"><h1>Agendamentos</h1>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        ${['upcoming','past','completed','cancelled','all'].map(f=>`<button class="btn ${apptFilter===f?'btn-primary':'btn-ghost'} btn-sm" onclick="apptFilter='${f}';render()">${{upcoming:'Próximos',past:'Passados',completed:'Concluídos',cancelled:'Cancelados',all:'Todos'}[f]}</button>`).join('')}
+      </div>
+    </div>
+    <div class="panel">
+      ${list.length ? apptTable(list, {showDate:true}) : `<div class="empty-state">Nenhum agendamento encontrado.</div>`}
+    </div>
+  `;
+}
+
+/* ---------------- Services ---------------- */
+function adminServices(){
+  return `
+    <div class="admin-topbar"><h1>Serviços</h1><button class="btn btn-primary btn-sm" onclick="openServiceForm()">Adicionar serviço</button></div>
+    <div class="panel">
+      <table><thead><tr><th>Nome</th><th>Preço</th><th>Duração</th><th>Status</th><th></th></tr></thead><tbody>
+        ${DB.services.map(s=>`<tr>
+          <td>${escapeHtml(s.name)}</td>
+          <td>${fmtMoney(s.price)}</td>
+          <td>${s.duration} min</td>
+          <td><span class="badge ${s.active?'badge-ok':'badge-off'}">${s.active?'Ativo':'Inativo'}</span></td>
+          <td class="row-actions">
+            <button class="icon-btn" onclick="openServiceForm('${s.id}')">Editar</button>
+            <button class="icon-btn" onclick="toggleService('${s.id}')">${s.active?'Desativar':'Ativar'}</button>
+            <button class="icon-btn" onclick="deleteService('${s.id}')">Excluir</button>
+          </td>
+        </tr>`).join('')}
+      </tbody></table>
+    </div>
+  `;
+}
+function openServiceForm(id){ modal = {type:'serviceForm', id: id||null}; render(); }
+async function submitServiceForm(id){
+  const name = document.getElementById('m-s-name').value.trim();
+  const desc = document.getElementById('m-s-desc').value.trim();
+  const price = parseFloat(document.getElementById('m-s-price').value);
+  const duration = parseInt(document.getElementById('m-s-duration').value,10);
+  if(!name || isNaN(price) || isNaN(duration)){ alert('Preencha todos os campos corretamente.'); return; }
+  if(id){ Object.assign(getService(id), {name, desc, price, duration}); }
+  else { DB.services.push({id:uid(), name, desc, price, duration, active:true}); }
+  await saveDB(); modal=null; render();
+}
+async function toggleService(id){ const s=getService(id); s.active=!s.active; await saveDB(); render(); }
+async function deleteService(id){
+  if(!confirm('Excluir este serviço?')) return;
+  DB.services = DB.services.filter(s=>s.id!==id);
+  await saveDB(); render();
+}
+
+/* ---------------- Clients ---------------- */
+let clientSearch = '';
+function adminClients(){
+  let list = Object.values(DB.clients).sort((a,b)=>b.history.length-a.history.length);
+  const totalCount = list.length;
+  if(clientSearch.trim()){
+    const q = clientSearch.trim().toLowerCase().replace(/\D/g,'');
+    const qText = clientSearch.trim().toLowerCase();
+    list = list.filter(c => c.name.toLowerCase().includes(qText) || (q && c.phone.includes(q)));
+  }
+  return `
+    <div class="admin-topbar">
+      <h1>Clientes</h1>
+      <input type="text" id="client-search-input" placeholder="Buscar por nome ou telefone" value="${escapeHtml(clientSearch)}"
+        oninput="clientSearch=this.value;render()"
+        style="padding:10px 12px;background:var(--surface);border:1px solid var(--border-soft);border-radius:var(--radius-m);color:var(--text);min-width:220px"/>
+    </div>
+    <div class="panel">
+      ${totalCount===0 ? `<div class="empty-state">Nenhum cliente cadastrado ainda. Os clientes aparecem aqui automaticamente após o primeiro agendamento.</div>` : (list.length ? `<table><thead><tr><th>Nome</th><th>Telefone</th><th>Agendamentos</th><th>Último agendamento</th></tr></thead><tbody>
+        ${list.map(c=>{
+          const appts = c.history.map(id=>DB.appointments.find(a=>a.id===id)).filter(Boolean).sort((a,b)=>(b.date+b.time).localeCompare(a.date+a.time));
+          const last = appts[0];
+          return `<tr><td>${escapeHtml(c.name)}</td><td>${escapeHtml(c.phone)}</td><td>${c.history.length}</td><td>${last?fmtDate(last.date):'—'}</td></tr>`;
+        }).join('')}
+      </tbody></table>` : `<div class="empty-state">Nenhum cliente encontrado para essa busca.</div>`)}
+    </div>
+  `;
+}
+
+/* ---------------- Hours ---------------- */
+function adminHours(){
+  const h = DB.config.hours;
+  return `
+    <div class="admin-topbar"><h1>Horários de funcionamento</h1></div>
+    <div class="panel">
+      ${[0,1,2,3,4,5,6].map(d=>`
+        <div class="day-block">
+          <div class="day-block-head">
+            <b>${WEEKDAYS[d]}</b>
+            <label class="toggle"><input type="checkbox" ${!h[d].closed?'checked':''} onchange="toggleDayClosed(${d}, !this.checked)"/><span class="track"></span></label>
+          </div>
+          ${h[d].closed ? `<div style="color:var(--text-mute);font-size:13px">Fechado</div>` : `
+            ${h[d].ranges.map((r,i)=>`
+              <div class="range-row">
+                <input type="time" value="${r.open}" onchange="updateRange(${d},${i},'open',this.value)"/>
+                <span style="color:var(--text-mute)">até</span>
+                <input type="time" value="${r.close}" onchange="updateRange(${d},${i},'close',this.value)"/>
+                <button class="icon-btn" onclick="removeRange(${d},${i})">Remover</button>
+              </div>
+            `).join('')}
+            <button class="icon-btn" onclick="addRange(${d})">+ Adicionar intervalo</button>
+          `}
+        </div>
+      `).join('')}
+    </div>
+    <div class="panel">
+      <h3>Intervalo entre horários do agendamento</h3>
+      <div class="field" style="max-width:200px">
+        <label>Minutos</label>
+        <select onchange="updateSlotInterval(this.value)">
+          ${[15,20,30,45,60].map(v=>`<option value="${v}" ${DB.config.slotInterval==v?'selected':''}>${v} min</option>`).join('')}
+        </select>
+      </div>
+    </div>
+  `;
+}
+async function toggleDayClosed(day, closed){
+  DB.config.hours[day].closed = closed;
+  if(!closed && DB.config.hours[day].ranges.length===0) DB.config.hours[day].ranges.push({open:'09:00', close:'18:00'});
+  await saveDB(); render();
+}
+async function addRange(day){ DB.config.hours[day].ranges.push({open:'09:00', close:'18:00'}); await saveDB(); render(); }
+async function removeRange(day, idx){ DB.config.hours[day].ranges.splice(idx,1); await saveDB(); render(); }
+async function updateRange(day, idx, field, value){ DB.config.hours[day].ranges[idx][field] = value; await saveDB(); }
+async function updateSlotInterval(v){ DB.config.slotInterval = parseInt(v,10); await saveDB(); }
+
+/* ---------------- Settings ---------------- */
+function adminSettings(){
+  const cfg = DB.config;
+  return `
+    <div class="admin-topbar"><h1>Configurações</h1></div>
+    <div class="panel">
+      <h3>Contato e redes sociais</h3>
+      <div class="field"><label>WhatsApp (com DDI e DDD, ex: 5549988851058)</label><input id="s-whats" value="${escapeHtml(cfg.whatsapp)}"/></div>
+      <div class="field"><label>Instagram (@usuario)</label><input id="s-insta" value="${escapeHtml(cfg.instagram)}"/></div>
+      <div class="field"><label>Endereço</label><input id="s-addr" value="${escapeHtml(cfg.address)}"/></div>
+      <button class="btn btn-primary" onclick="saveSettings()">Salvar configurações</button>
+    </div>
+    <div class="panel">
+      <h3>Sobre o Prado</h3>
+      <div class="field"><label>Nome</label><input id="s-bname" value="${escapeHtml(cfg.barberName)}"/></div>
+      <div class="field"><label>URL da foto (opcional)</label><input id="s-bphoto" value="${escapeHtml(cfg.barberPhoto)}" placeholder="https://..."/></div>
+      <div class="field"><label>Breve apresentação (opcional)</label><textarea id="s-bbio" rows="3">${escapeHtml(cfg.barberBio)}</textarea></div>
+      <button class="btn btn-primary" onclick="saveBarberInfo()">Salvar</button>
+    </div>
+    <div class="panel">
+      <h3>Segurança</h3>
+      <div class="field"><label>E-mail de acesso</label><input id="s-email" value="${escapeHtml(cfg.adminEmail||'')}"/></div>
+      <div class="field"><label>Nova senha</label><input type="password" id="s-newpass" placeholder="Deixe em branco para manter a atual"/></div>
+      <button class="btn btn-ghost" onclick="changeCredentials()">Atualizar credenciais</button>
+    </div>
+  `;
+}
+async function saveSettings(){
+  DB.config.whatsapp = document.getElementById('s-whats').value.replace(/\D/g,'');
+  DB.config.instagram = document.getElementById('s-insta').value.trim();
+  DB.config.address = document.getElementById('s-addr').value.trim();
+  await saveDB(); render();
+}
+async function saveBarberInfo(){
+  DB.config.barberName = document.getElementById('s-bname').value.trim() || 'Prado';
+  DB.config.barberPhoto = document.getElementById('s-bphoto').value.trim();
+  DB.config.barberBio = document.getElementById('s-bbio').value.trim();
+  await saveDB(); render();
+}
+async function changeCredentials(){
+  const email = document.getElementById('s-email').value.trim().toLowerCase();
+  const v = document.getElementById('s-newpass').value;
+  if(!email.includes('@')){ alert('Informe um e-mail válido.'); return; }
+  if(v && v.length<6){ alert('A nova senha deve ter pelo menos 6 caracteres.'); return; }
+  DB.config.adminEmail = email;
+  if(v){
+    const salt = randomSalt();
+    DB.config.adminSalt = salt;
+    DB.config.adminPasswordHash = await hashPassword(v, salt);
+  }
+  await saveDB(); alert('Credenciais atualizadas.'); render();
+}
+
+/* ============================================================
+   MODALS
+   ============================================================ */
+function closeModal(){ modal=null; render(); }
+function renderModal(){
+  if(!modal) return '';
+  let body='';
+  if(modal.type==='serviceForm'){
+    const s = modal.id ? getService(modal.id) : null;
+    body = `
+      <h3>${modal.id?'Editar serviço':'Adicionar serviço'}</h3>
+      <div class="field"><label>Nome</label><input id="m-s-name" value="${s?escapeHtml(s.name):''}"/></div>
+      <div class="field"><label>Descrição</label><textarea id="m-s-desc" rows="2">${s?escapeHtml(s.desc||''):''}</textarea></div>
+      <div class="field"><label>Preço (R$)</label><input id="m-s-price" type="number" step="0.01" value="${s?s.price:''}"/></div>
+      <div class="field"><label>Duração (minutos)</label><input id="m-s-duration" type="number" value="${s?s.duration:''}"/></div>
+      <div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="submitServiceForm(${modal.id?`'${modal.id}'`:'null'})">Salvar</button></div>
+    `;
+  } else if(modal.type==='blockSlot'){
+    body = `
+      <h3>Bloquear horário</h3>
+      <div class="field"><label>Data</label><input type="date" id="m-block-date" value="${modal.date}"/></div>
+      <div class="field"><label>Horário</label><input type="time" id="m-block-time" value="${modal.time}"/></div>
+      <div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="submitBlockSlot()">Bloquear</button></div>
+    `;
+  } else if(modal.type==='manualAppt'){
+    body = `
+      <h3>Novo agendamento</h3>
+      <div class="field"><label>Serviço</label><select id="m-appt-service">${DB.services.map(s=>`<option value="${s.id}">${escapeHtml(s.name)}</option>`).join('')}</select></div>
+      <div class="field"><label>Data</label><input type="date" id="m-appt-date" value="${adminDateFilter}"/></div>
+      <div class="field"><label>Horário</label><input type="time" id="m-appt-time" value="09:00"/></div>
+      <div class="field"><label>Nome do cliente</label><input id="m-appt-name"/></div>
+      <div class="field"><label>Telefone</label><input id="m-appt-phone"/></div>
+      <div class="field"><label>Status</label><select id="m-appt-status"><option value="confirmed">Confirmado</option><option value="pending">Pendente</option></select></div>
+      <div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="submitManualAppt()">Criar</button></div>
+    `;
+  } else if(modal.type==='editAppt'){
+    const a = DB.appointments.find(x=>x.id===modal.id);
+    body = `
+      <h3>Editar agendamento</h3>
+      <div class="field"><label>Serviço</label><select id="m-edit-service">${DB.services.map(s=>`<option value="${s.id}" ${a.serviceId===s.id?'selected':''}>${escapeHtml(s.name)}</option>`).join('')}</select></div>
+      <div class="field"><label>Data</label><input type="date" id="m-edit-date" value="${a.date}"/></div>
+      <div class="field"><label>Horário</label><input type="time" id="m-edit-time" value="${a.time}"/></div>
+      <div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="submitEditAppt('${a.id}')">Salvar</button></div>
+    `;
+  } else if(modal.type==='apptDetail'){
+    const a = DB.appointments.find(x=>x.id===modal.id);
+    if(!a){ body = `<h3>Agendamento</h3><p style="color:var(--text-mute)">Este agendamento não existe mais.</p><div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal()">Fechar</button></div>`; }
+    else {
+      const svc = getService(a.serviceId);
+      body = `
+        <h3>Detalhes do agendamento</h3>
+        <div class="detail-row"><span>Nome</span><span>${escapeHtml(a.name)}</span></div>
+        <div class="detail-row"><span>Telefone</span><span>${formatPhoneDisplayAdmin(a.phone)}</span></div>
+        <div class="detail-row"><span>Serviço</span><span>${svc?escapeHtml(svc.name):'—'}</span></div>
+        <div class="detail-row"><span>Data</span><span>${fmtDate(a.date)}</span></div>
+        <div class="detail-row"><span>Horário</span><span>${a.time}</span></div>
+        <div class="detail-row"><span>Status</span><span><span class="status-pill" style="color:${statusPillColor(a.status)};background:${statusPillColor(a.status)}22;">${statusLabel(a.status)}</span></span></div>
+        <div class="modal-actions" style="justify-content:space-between;flex-wrap:wrap;gap:8px;">
+          <button class="link-btn icon-btn" onclick="openClientHistory('${a.phone}')">Ver histórico do cliente</button>
+          <a class="btn btn-whatsapp btn-sm" target="_blank" href="${waLinkForClient(a.phone)}">${ICONS.whatsapp} WhatsApp</a>
+        </div>
+        <div class="modal-actions" style="flex-wrap:wrap;">
+          <button class="btn btn-ghost" onclick="closeModal()">Fechar</button>
+          ${a.status==='pending' ? `<button class="btn btn-ghost" onclick="setApptStatus('${a.id}','confirmed');closeModal()">Confirmar</button>` : ''}
+          ${(a.status==='pending'||a.status==='confirmed') ? `<button class="btn btn-ghost" onclick="setApptStatus('${a.id}','completed');closeModal()">Concluir</button>` : ''}
+          ${a.status!=='cancelled' && a.status!=='completed' ? `<button class="btn btn-danger" onclick="if(confirm('Cancelar este agendamento?')){setApptStatus('${a.id}','cancelled');closeModal();}">Cancelar</button>` : ''}
+        </div>
+      `;
+    }
+  } else if(modal.type==='clientHistory'){
+    const phone = modal.phone;
+    const client = DB.clients[phone];
+    const appts = client ? client.history.map(id=>DB.appointments.find(a=>a.id===id)).filter(Boolean).sort((a,b)=>(b.date+b.time).localeCompare(a.date+a.time)) : [];
+    body = `
+      <h3>${client?escapeHtml(client.name):'Cliente'}</h3>
+      <p style="color:var(--text-mute);font-size:13px;margin-top:-10px;margin-bottom:18px;">${formatPhoneDisplayAdmin(phone)} · Total de agendamentos: ${appts.length}</p>
+      ${appts.length ? appts.map(a=>{
+        const svc = getService(a.serviceId);
+        return `<div class="history-item"><span>${fmtDate(a.date)} — ${svc?escapeHtml(svc.name):'—'}</span><span class="status-pill" style="color:${statusPillColor(a.status)};background:${statusPillColor(a.status)}22;">${statusLabel(a.status)}</span></div>`;
+      }).join('') : `<div class="empty-state">Nenhum histórico encontrado.</div>`}
+      <div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal()">Fechar</button></div>
+    `;
+  }
+  return `<div class="modal-overlay" onclick="if(event.target===this)closeModal()"><div class="modal">${body}</div></div>`;
+}
+function openApptDetail(id){ modal = {type:'apptDetail', id}; render(); }
+function openClientHistory(phone){ modal = {type:'clientHistory', phone}; render(); }
+
+/* ============================================================
+   INIT
+   ============================================================ */
+async function init(){
+  document.getElementById('app').innerHTML = '<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;color:#82806F;font-family:Inter,sans-serif">Carregando…</div>';
+  await loadDB();
+  render();
+}
+init();
+</script>
+</body>
+</html>
